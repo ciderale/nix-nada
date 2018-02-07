@@ -1,4 +1,14 @@
-let # Adding minor modifications/patches
+let # pin the version of the nixpkgs
+  hostPkgs = import <nixpkgs> {};
+  nixpkgs = (hostPkgs.fetchFromGitHub {
+    owner = "NixOS";
+    repo = "nixpkgs-channels";
+    rev = "931a0b8be80661902baefb3e7d55403be893e0e6";
+    sha256 = "028kq1k03kn2p6p5wh6c1wiyh4vsp25hj4cv5yfqnw8yllm28889";
+  });
+in
+
+let # Adding minor modifications/patches to python
   pyNoCheck = pkg: pkg.overridePythonAttrs (old: rec {doCheck = false;});
 
   packageOverrides = self: super: {
@@ -7,13 +17,13 @@ let # Adding minor modifications/patches
   };
 in
 
-#TODO: version pinning of nixpkgs
-#unstable channel at git revision
-#rev = "931a0b8be80661902baefb3e7d55403be893e0e6";
-with import <nixpkgs> {
+# load nixpkgs with modifications based on overlays mechanism
+#with import <nixpkgs> { # use the global nixpkgs
+with import nixpkgs {    # use the pinned nixpkgs
   overlays = [
     (pkgsself: pkgssuper: {
        python36 = pkgssuper.python36.override { inherit packageOverrides;};
+       # TODO: generalize to use_openmp(and gcc) or no_openmp on mac
        xgboost = pkgssuper.xgboost.overrideAttrs (old: rec {
          meta = { platforms = pkgsself.stdenv.lib.platforms.darwin; };
          patchPhase = '' substituteInPlace make/config.mk --replace "USE_OPENMP = 1" "USE_OPENMP = 0" '';
@@ -24,6 +34,7 @@ with import <nixpkgs> {
 };
 
 
+# define the actual jupyter packages
 let 
 
   python36x = python36.buildEnv.override {
@@ -160,6 +171,7 @@ let
 
      shellHook = ''
         mkdir -p $PWD/.jupyter
+        # setup some project specific environment variables
         #export JUPYTER_DATA_DIR=$PWD/.jupyter
         #export JUPYTER_RUNTIME_DIR=$PWD/.jupyter
         #export JUPYTER_CONFIG_DIR=${jupyter_config}/etc/jupyter
