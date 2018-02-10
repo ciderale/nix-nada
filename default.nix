@@ -30,6 +30,14 @@ with import nixpkgs {    # use the pinned nixpkgs
          #buildInputs = [pkgsself.gcc]; # alternatively if OPENMP is needed on osx
        });
     })
+    (pkgsself: pkgssuper: {
+       # this is not marked as pythonPackage yet => use buildPythonPackage somehow
+       gra = (pkgssuper.callPackage ./graph-tool.nix 
+                   { 
+                   inherit (pkgsself.python36.pkgs) pycairo scipy numpy pygobject3 matplotlib boost;
+                   python = pkgsself.python36;
+                   });
+    })
   ];
 };
 
@@ -167,7 +175,7 @@ let
   project = stdenv.mkDerivation rec {
      name = "project";
 
-     buildInputs = [python36x jupyter_config];
+     buildInputs = [python36x jupyter_config gra];
 
      shellHook = ''
         mkdir -p $PWD/.jupyter
