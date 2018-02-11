@@ -14,6 +14,7 @@ let # Adding minor modifications/patches to python
   packageOverrides = self: super: {
      send2trash = pyNoCheck super.send2trash;
      notebook = pyNoCheck super.notebook;
+     #graph-tool = (super.callPackage ./2.x.x.nix {
      graph-tool = (super.callPackage ./graph-tool.nix {
        inherit (self) pycairo scipy numpy pygobject3 matplotlib boost;
      });
