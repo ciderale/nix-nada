@@ -14,6 +14,9 @@ let # Adding minor modifications/patches to python
   packageOverrides = self: super: {
      send2trash = pyNoCheck super.send2trash;
      notebook = pyNoCheck super.notebook;
+     graph-tool = (super.callPackage ./graph-tool.nix {
+       inherit (self) pycairo scipy numpy pygobject3 matplotlib boost;
+     });
   };
 in
 
@@ -29,14 +32,6 @@ with import nixpkgs {    # use the pinned nixpkgs
          patchPhase = '' substituteInPlace make/config.mk --replace "USE_OPENMP = 1" "USE_OPENMP = 0" '';
          #buildInputs = [pkgsself.gcc]; # alternatively if OPENMP is needed on osx
        });
-    })
-    (pkgsself: pkgssuper: {
-       # this is not marked as pythonPackage yet => use buildPythonPackage somehow
-       gra = (pkgssuper.callPackage ./graph-tool.nix 
-                   { 
-                   inherit (pkgsself.python36.pkgs) pycairo scipy numpy pygobject3 matplotlib boost;
-                   python = pkgsself.python36;
-                   });
     })
   ];
 };
@@ -63,6 +58,7 @@ let
       scikitlearn
       scikitimage
       xgboost
+      graph-tool
       cython
       statsmodels
       sympy
@@ -175,7 +171,7 @@ let
   project = stdenv.mkDerivation rec {
      name = "project";
 
-     buildInputs = [python36x jupyter_config gra];
+     buildInputs = [python36x jupyter_config];
 
      shellHook = ''
         mkdir -p $PWD/.jupyter
