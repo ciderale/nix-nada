@@ -1,8 +1,7 @@
 let # pin the version of the nixpkgs
   hostPkgs = import <nixpkgs> {};
   nixpkgs = (hostPkgs.fetchFromGitHub {
-    owner = "NixOS";
-    repo = "nixpkgs";
+    owner = "NixOS"; repo = "nixpkgs";
     rev = "83dc28cae2982f6aaa507192a19aff3ef0ff2074";
     sha256 = "0jv5hv6agvnfzfljbni3hrh606d1f9p5vg6qqgbvp5q1z99pw01g";
   });
