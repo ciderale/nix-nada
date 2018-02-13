@@ -162,19 +162,26 @@ let # define the actual jupyter packages
       '';
     };
 
+  # syntax is checked with bash -n
+  ensureGitIgnore = writeShellScriptBin "ensureGitIgnore.sh" ''
+       for x in $*; do
+           grep -sq $x $PWD/.gitignore || echo $x >> $PWD/.gitignore
+       done
+  '';
 
   project = stdenv.mkDerivation rec {
      name = "project";
 
-     buildInputs = [python36x jupyter_config];
+     buildInputs = [python36x jupyter_config ensureGitIgnore ];
      propagatedBuildInputs = [ gtk3 gobjectIntrospection ];
 
      shellHook = ''
         mkdir -p $PWD/.jupyter
+        ensureGitIgnore.sh .jupyter .ipynb_checkpoints
         export JUPYTER_DATA_DIR=$PWD/.jupyter
         export JUPYTER_RUNTIME_DIR=$PWD/.jupyter
       '';
     } ;
 
-in 
+in
   project
