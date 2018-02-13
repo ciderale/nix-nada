@@ -38,8 +38,7 @@ with import nixpkgs {    # use the pinned nixpkgs
 };
 
 
-# define the actual jupyter packages
-let 
+let # define the actual jupyter packages
 
   python36x = python36.buildEnv.override {
     ignoreCollisions = true; # https://github.com/NixOS/nixpkgs/issues/24517
@@ -159,10 +158,8 @@ let
         ln -s ${python36.pkgs.widgetsnbextension}/share/jupyter/nbextensions/jupyter-js-widgets
 
         # put variable data into working directory
-        makeWrapper ${python36x.pkgs.jupyter_core}/bin/jupyter \
+        makeWrapper ${python36x}/bin/jupyter \
                     $out/bin/jupy \
-           --set JUPYTER_DATA_DIR    ".jupyter" \
-           --set JUPYTER_RUNTIME_DIR ".jupyter" \
            --set JUPYTER_CONFIG_DIR  $out/etc/jupyter \
            --set JUPYTER_PATH        $out/etc/jupyter
       '';
@@ -176,11 +173,8 @@ let
 
      shellHook = ''
         mkdir -p $PWD/.jupyter
-        # setup some project specific environment variables
-        #export JUPYTER_DATA_DIR=$PWD/.jupyter
-        #export JUPYTER_RUNTIME_DIR=$PWD/.jupyter
-        #export JUPYTER_CONFIG_DIR=${jupyter_config}/etc/jupyter
-        #export JUPYTER_PATH=${jupyter_config}/etc/jupyter
+        export JUPYTER_DATA_DIR=$PWD/.jupyter
+        export JUPYTER_RUNTIME_DIR=$PWD/.jupyter
       '';
     } ;
 
