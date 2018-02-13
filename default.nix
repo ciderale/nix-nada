@@ -167,6 +167,7 @@ let # define the actual jupyter packages
      name = "project";
 
      buildInputs = [python36x jupyter_config];
+     propagatedBuildInputs = [ gtk3 gobjectIntrospection ];
 
      shellHook = ''
         mkdir -p $PWD/.jupyter
