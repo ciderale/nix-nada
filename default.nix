@@ -5,34 +5,11 @@ let # pin the version of the nixpkgs
     rev = "83dc28cae2982f6aaa507192a19aff3ef0ff2074";
     sha256 = "0jv5hv6agvnfzfljbni3hrh606d1f9p5vg6qqgbvp5q1z99pw01g";
   });
+  overlay = import ./overlay.nix;
+  pkgs = import nixpkgs { overlays = [overlay]; };
 in
 
-let # Adding minor modifications/patches to python
-  pyNoCheck = pkg: pkg.overridePythonAttrs (old: rec {doCheck = false;});
-
-  packageOverrides = self: super: {
-     send2trash = pyNoCheck super.send2trash;
-     notebook = pyNoCheck super.notebook;
-     graph-tool = super.callPackage ./2.x.x.nix {}; # could be dump since changes in PR
-  };
-in
-
-# load nixpkgs with modifications based on overlays mechanism
-#with import <nixpkgs> { # use the global nixpkgs
-with import nixpkgs {    # use the pinned nixpkgs
-  overlays = [
-    (pkgsself: pkgssuper: {
-       python36 = pkgssuper.python36.override { inherit packageOverrides;};
-       # TODO: generalize to use_openmp(and gcc) or no_openmp on mac
-       xgboost = pkgssuper.xgboost.overrideAttrs (old: rec {
-         meta = { platforms = pkgsself.stdenv.lib.platforms.darwin; };
-         patchPhase = '' substituteInPlace make/config.mk --replace "USE_OPENMP = 1" "USE_OPENMP = 0" '';
-         #buildInputs = [pkgsself.gcc]; # alternatively if OPENMP is needed on osx
-       });
-    })
-  ];
-};
-
+with pkgs;
 
 let # define the actual jupyter packages
 
