@@ -2,9 +2,9 @@ let # pin the version of the nixpkgs
   hostPkgs = import <nixpkgs> {};
   nixpkgs = (hostPkgs.fetchFromGitHub {
     owner = "NixOS";
-    repo = "nixpkgs-channels";
-    rev = "931a0b8be80661902baefb3e7d55403be893e0e6";
-    sha256 = "028kq1k03kn2p6p5wh6c1wiyh4vsp25hj4cv5yfqnw8yllm28889";
+    repo = "nixpkgs";
+    rev = "83dc28cae2982f6aaa507192a19aff3ef0ff2074";
+    sha256 = "0jv5hv6agvnfzfljbni3hrh606d1f9p5vg6qqgbvp5q1z99pw01g";
   });
 in
 
@@ -14,10 +14,7 @@ let # Adding minor modifications/patches to python
   packageOverrides = self: super: {
      send2trash = pyNoCheck super.send2trash;
      notebook = pyNoCheck super.notebook;
-     graph-tool = (super.callPackage ./2.x.x.nix {
-     #graph-tool = (super.callPackage ./graph-tool.nix {
-       inherit (self) pycairo scipy numpy pygobject3 matplotlib boost;
-     });
+     graph-tool = super.callPackage ./2.x.x.nix {}; # could be dump since changes in PR
   };
 in
 
