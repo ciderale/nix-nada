@@ -10,4 +10,19 @@ stdenv.mkDerivation rec {
     export PS1="\\u@\h \\W]\\$ ${name}> "
     echo $PATH | tr : '\n'
   '';
+
+  # Actually building it requires also
+
+  builder = builtins.toFile "builder.sh" ''
+    source $stdenv/setup;
+    mkdir -p $out;
+    ln -s $theprogram/bin $out/bin
+    gradle -version >> $out/versions;
+    node --version >> $out/versions;
+  '';
+
+  theprogram = writeShellScriptBin "helloworld" ''
+  	echo "Hello World $1"
+  '';
+
 }
