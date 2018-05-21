@@ -36,6 +36,6 @@ in  # minimal docker image to get a nix-installed linux docker container running
     # mounts the current working directory as a data directory
     # install with: nix-env -f linix.nix -i  
   writeScriptBin "linix" ''
-        cat ${dockerfile} | ${docker}/bin/docker build -t linix:latest -
-        ${docker}/bin/docker run -ti --volume $PWD:/home/nixi/data linix
+        cat ${dockerfile} | ${docker}/bin/docker build -t linix:latest - \
+        && ${docker}/bin/docker run -ti --volume $PWD:/home/nixi/data linix
   ''
