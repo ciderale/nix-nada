@@ -13,7 +13,7 @@ let
   boot-zsh = writeScriptBin "boot-zsh" "exec zsh";
 
   zshrc = writeText "myzshrc" ''
-    export ZSH=${oh-my-zsh}/Share/oh-my-zsh
+    export ZSH=${oh-my-zsh}/share/oh-my-zsh
     # check example in: $ZSH/templates/zshrc.zsh-template
 
     # Which plugins would you like to load? (plugins can be found in $ZSH/plugins/*)
