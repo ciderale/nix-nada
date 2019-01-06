@@ -5,7 +5,7 @@ let
   selectJS = self: super: { nodejs = self.nodejs-10_x; } ;
 in
 
-with import <nixpkgs> {
+with import ../nix/1809-darwin.nix {
   inherit system;
   overlays = [ selectJS ];
 };
@@ -17,12 +17,12 @@ let
   	echo "Hello World $1!"
   '';
 
-in 
+in
 
 stdenv.mkDerivation rec {
   name = "my-project";
   version = "0.1";
-  
+
   buildInputs = [ git nodejs ];
 
   # Run only the installPhase -- no unpacking -- phases must be "quoted"

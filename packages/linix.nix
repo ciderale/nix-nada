@@ -1,4 +1,4 @@
-with (import <nixpkgs> {});
+with (import ../nix/1809-darwin.nix {});
 
 let dockerfile = writeText "Dockerfile" ''
   From ubuntu:17.10
@@ -10,9 +10,9 @@ let dockerfile = writeText "Dockerfile" ''
   # setup locale
   RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
       && locale-gen
-  ENV LANG en_US.UTF-8  
-  ENV LANGUAGE en_US:en  
-  ENV LC_ALL en_US.UTF-8     
+  ENV LANG en_US.UTF-8
+  ENV LANGUAGE en_US:en
+  ENV LC_ALL en_US.UTF-8
 
   # setting up the user
   RUN useradd -ms /bin/bash nixi
@@ -34,7 +34,7 @@ let dockerfile = writeText "Dockerfile" ''
 
 in  # minimal docker image to get a nix-installed linux docker container running
     # mounts the current working directory as a data directory
-    # install with: nix-env -f linix.nix -i  
+    # install with: nix-env -f linix.nix -i
   writeScriptBin "linix" ''
         cat ${dockerfile} | ${docker}/bin/docker build -t linix:latest - \
         && ${docker}/bin/docker run -ti --volume $PWD:/home/nixi/data linix

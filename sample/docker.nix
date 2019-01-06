@@ -1,9 +1,6 @@
-{ system ? builtins.currentSystem
-}:
+with import ../nix/1809-darwin.nix { };
 
-with import <nixpkgs> { inherit system; };
-
-let 
+let
   program = callPackage ./sample.nix {
     # within docker, we need linux binaries!
     system = "x86_64-linux";

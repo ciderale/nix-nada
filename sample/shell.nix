@@ -3,11 +3,9 @@
 
 let
   java = import ../packages/java.nix;
-
-  pkgs = import <nixpkgs> {
+  pkgs = import ../nix/1809-darwin.nix {
     overlays = [java.custom (java.select jdkversion)];
   };
-
 in with pkgs;
 
 stdenv.mkDerivation {

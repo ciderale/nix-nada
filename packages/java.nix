@@ -2,7 +2,7 @@
   custom = self: super: rec {
 
     # DEPRECATED does not make much sense anymore.. jdk11 exists
-    jdk11 = super.jdk11.overrideAttrs (oldAttrs: rec {
+    jdk11 = super.jdk10.overrideAttrs (oldAttrs: rec {
       version = "11.2.3";
       openjdk = "11.0.1";
       name = "zulu-${version}";
