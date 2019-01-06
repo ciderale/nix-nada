@@ -1,5 +1,11 @@
-# Samples for using nixpkgs and jupyter on osx
+# Configuration of a user environment
 
+- `nix-shell --pure`: try the configuration in a shell
+- `nix-env -f ./default.nix -iA buildInputs` permanent installation
+
+# Various samples (jupyter, docker usage, etc on osx)
+
+- the configuration for jupyter is currently not maintained
 
 # Notes:
 
