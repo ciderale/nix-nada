@@ -1,0 +1,72 @@
+""Use Vim settings, rather then Vi settings (much better!).
+"This must be first, because it changes other options as a side effect.
+set nocompatible
+set encoding=utf-8
+set cc=78 " Set 80th column marker
+
+let mapleader=","
+inoremap jj <ESC>
+
+"allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+"store lots of :cmdline history
+set history=1000
+set showcmd     "show incomplete cmds down the bottom
+set showmode    "show current mode down the bottom
+set number      "show line numbers
+
+" TABS
+"default indent settings
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+set expandtab
+set autoindent
+
+set wildmode=longest,list,full
+set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore+=*\\tmp\\*,*.swp,*.swo,*.zip,.git,.cabal-sandbox
+set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
+set completeopt+=longest
+
+"load ftplugins and indent files
+filetype plugin on
+filetype indent on
+
+
+""tell the term has 256 colors
+set t_Co=256
+
+" NERD comments
+let g:NERDCustomDelimiters = { 'haskell': { 'left': '-- ','right': '' } }
+
+"explorer mappings
+nnoremap <f1> :BufExplorer<cr>
+nnoremap <f3> :TagbarToggle<cr>
+nnoremap <Leader>o :NERDTreeToggle<CR>
+
+" ctrlp
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let g:ctrlp_working_path_mode = 'ra'
+map <Leader>f :CtrlP<CR>
+map <Leader>p :CtrlPTag<CR>
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-j>']
+let g:ycm_key_list_previous_completion = ['<C-k>']
+" set python2 interpreter path TODO
+" let g:ycm_server_python_interpreter = '/usr/bin/python'
+
+autocmd Filetype svn,*commit* setlocal spell
+
+" move around panes with h,j,k,l
+nnoremap <C-k> :wincmd k <CR>
+nnoremap <C-l> :wincmd l <CR>
+nnoremap <C-h> :wincmd h <CR>
+nnoremap <C-j> :wincmd j <CR>
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0

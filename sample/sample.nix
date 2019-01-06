@@ -14,7 +14,7 @@ let
 
   # for some very simple one-off script files (make it executable)
   helloworld = writeShellScriptBin "helloworld" ''
-  	echo "Hello World $1"
+  	echo "Hello World $1!"
   '';
 
 in 

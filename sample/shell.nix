@@ -2,7 +2,7 @@
 }:
 
 let
-  java = import ./java.nix;
+  java = import ../packages/java.nix;
 
   pkgs = import <nixpkgs> {
     overlays = [java.custom (java.select jdkversion)];

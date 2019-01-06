@@ -1,7 +1,7 @@
 with (import <nixpkgs> {});
 
 let dockerfile = writeText "Dockerfile" ''
-  From ubuntu:18.04
+  From ubuntu:17.10
 
   # boot strapping environment
   RUN apt-get update

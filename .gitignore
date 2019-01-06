@@ -1,0 +1,4 @@
+**/result*
+.jupyter
+.ipynb_checkpoints
+notebooks

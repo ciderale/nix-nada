@@ -2,8 +2,10 @@ let # pin the version of the nixpkgs
   hostPkgs = import <nixpkgs> {};
   nixpkgs = (hostPkgs.fetchFromGitHub {
     owner = "NixOS"; repo = "nixpkgs";
-    rev = "83dc28cae2982f6aaa507192a19aff3ef0ff2074";
-    sha256 = "0jv5hv6agvnfzfljbni3hrh606d1f9p5vg6qqgbvp5q1z99pw01g";
+    #rev = "83dc28cae2982f6aaa507192a19aff3ef0ff2074";
+    #sha256 = "0jv5hv6agvnfzfljbni3hrh606d1f9p5vg6qqgbvp5q1z99pw01g";
+    rev = "120b013e0c082d58a5712cde0a7371ae8b25a601" ;
+    sha256 = "0hk4y2vkgm1qadpsm4b0q1vxq889jhxzjx3ragybrlwwg54mzp4f";
   });
   overlay = import ./overlay.nix;
   pkgs = import nixpkgs { overlays = [overlay]; };
@@ -12,29 +14,41 @@ in
 with pkgs;
 
 let # define the actual jupyter packages
+  mypy = python36;
 
-  python36x = python36.buildEnv.override {
+  python36x = mypy.buildEnv.override {
     ignoreCollisions = true; # https://github.com/NixOS/nixpkgs/issues/24517
-    extraLibs = with python36.pkgs; [
+    extraLibs = with mypy.pkgs; [
       # Kernel
       ipykernel
       ipywidgets
 
       # Visualization
-      matplotlib
+      #matplotlib
+      mypy.pkgs.matplotlib.override { enableQt = true; }
       seaborn
+      qtpy
+      pyqt5
+      pysideTools
+      #qt5.pyqt
+      #qt
+      #qt5.qttools
+      #PyQT5
+      #PySide2
 
       # The numeric machinery
       numpy
       scipy
       pandas
       scikitlearn
-      scikitimage
-      xgboost
-      graph-tool
-      cython
-      statsmodels
-      sympy
+      #scikitimage
+      #xgboost
+      #graph-tool
+      #cython
+      #statsmodels
+      #sympy
+      #pyyaml
+      #pymysql
     ];
   };
 
@@ -96,7 +110,7 @@ let # define the actual jupyter packages
             d, fname = os.path.split(os_path)
             check_call(['jupyter', 'nbconvert', '--to', 'script', fname], cwd=d)
             check_call(['jupyter', 'nbconvert', '--to', 'html', fname], cwd=d)
-        c.FileContentsManager.post_save_hook = post_save
+        #c.FileContentsManager.post_save_hook = post_save
       '';
 
       nbjson = writeText "notebook.json" (builtins.toJSON {
@@ -128,7 +142,7 @@ let # define the actual jupyter packages
         cd $out/etc/jupyter/nbextensions
         ln -s ${vimplugin} vim_binding
         ln -s ${calysto}/calysto
-        ln -s ${python36.pkgs.widgetsnbextension}/share/jupyter/nbextensions/jupyter-js-widgets
+        ln -s ${mypy.pkgs.widgetsnbextension}/share/jupyter/nbextensions/jupyter-js-widgets
 
         # put variable data into working directory
         makeWrapper ${python36x}/bin/jupyter \
@@ -145,15 +159,27 @@ let # define the actual jupyter packages
        done
   '';
 
+  pys = mypy.pkgs.pyside.overrideAttrs (old: rec {
+     makeFlags = [ "QT_PLUGIN_PATH=${mypy.pkgs.pysideShiboken}/lib/generatorrunner" "VERBOSE=1" ];
+     cmakeFlags = [ "-DALTERNATIVE_QT_INCLUDE_DIR=${qt4}/lib/QtCore.framework" "-DCMAKE_CXX_FLAGS=-F${qt4}/lib" ];
+  });
+
   project = stdenv.mkDerivation rec {
      name = "project";
 
-     buildInputs = [python36x jupyter_config ensureGitIgnore ];
-     propagatedBuildInputs = [ gtk3 gobjectIntrospection ];
+     #buildInputs = [python36x jupyter_config ensureGitIgnore ];
+     #buildInputs = [python36x jupyter_config ensureGitIgnore ];
+     #propagatedBuildInputs = [ gtk3 gobjectIntrospection ];
+     #buildInputs = [python36x mypy.pkgs.pysideTools];
+     buildInputs = [ #python36x
+     #qt5.qttools
+     qt4
+     pys
+     ];
 
      shellHook = ''
         mkdir -p $PWD/.jupyter
-        ensureGitIgnore.sh .jupyter .ipynb_checkpoints
+        #ensureGitIgnore.sh .jupyter .ipynb_checkpoints
         export JUPYTER_DATA_DIR=$PWD/.jupyter
         export JUPYTER_RUNTIME_DIR=$PWD/.jupyter
       '';
