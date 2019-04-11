@@ -1,7 +1,7 @@
 # nix-pinning nixpkgs-18.09-darwin
-# committed on "2019-01-06T12:12:24Z" - retrieved on 2019-01-06
+# committed on "2019-04-08T03:04:42Z" - retrieved on 2019-04-11
 import (builtins.fetchTarball {
-  name   = "nixpkgs-18.09-darwin.2019-01-06";
-  url    = "https://github.com/NixOS/nixpkgs/archive/591da7cb8480907101f4003d01337b21917cae35.tar.gz";
-  sha256 = "093yblp7d5rlwyrg1jckc4p3sps5hr0b1aa9b2qypqzw1flj9g50";
+  name   = "nixpkgs-18.09-darwin.2019-04-11";
+  url    = "https://github.com/NixOS/nixpkgs/archive/feaf8ac4632c2d9d27f24272da2e6873d2e9a7ad.tar.gz";
+  sha256 = "0qz8qmvh9vb6n1ziflhlww0pqqw936228pcpwnsyl8adi2izc7lw";
 })
