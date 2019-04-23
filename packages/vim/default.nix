@@ -39,7 +39,7 @@ in
     postBuild = ''
       wrapProgram "$out/bin/vim" \
       --add-flags "-X" \
-      --set PATH '${haskellPackages.hasktags}/bin:${git}/bin:${gnutar}/bin:${gzip}/bin'
+      --prefix PATH '${haskellPackages.hasktags}/bin:${git}/bin:${gnutar}/bin:${gzip}/bin'
       ln -s $out/bin/{vim,vi}
     '';
     paths = [ myvim ];
