@@ -1,4 +1,6 @@
-{ zsh, oh-my-zsh, writeText, makeWrapper, symlinkJoin, writeScriptBin }:
+{ zsh, oh-my-zsh, writeText, makeWrapper, symlinkJoin, writeScriptBin,
+  direnv
+}:
 
 let
   zsh-nix-shell = builtins.fetchTarball {
@@ -41,6 +43,7 @@ let
 
     # execute nix-shell hook again (when switching from bash to zsh)
     eval "$shellHook"
+    eval "$(direnv hook zsh)"
   '';
 in
   symlinkJoin {
