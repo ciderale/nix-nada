@@ -14,7 +14,7 @@ in
 # install globally with
 # nix-env -f ./default.nix -iA buildInputs
 mkShell {
-  buildInputs = with import ./default.nix; [
+  buildInputs = [
     nix-pinning
     zsh vim git
     which coreutils less
