@@ -3,7 +3,7 @@
 let
   lorriRepo = import ../nix/lorri.nix;
   lorri = import "${lorriRepo}/default.nix" {
-    # inherit pkgs; # does not build with 'crate' problem
+    inherit pkgs; # does not build with 'crate' problem
     src = lorriRepo;
   };
   # provides direnv in a sufficiently high, compatible version
