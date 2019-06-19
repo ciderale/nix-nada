@@ -29,6 +29,7 @@ let
           vim-trailing-whitespace
           vimproc
           youcompleteme
+          ale
         ];
       };
     };
