@@ -1,5 +1,5 @@
 let
-  pkgs = import ./nix/1809-darwin.nix {};
+  pkgs = import ./nix/1903-darwin.nix {};
 in
 
 with pkgs;
