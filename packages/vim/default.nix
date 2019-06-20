@@ -28,6 +28,7 @@ let
           vim-nix
           vim-trailing-whitespace
           vimproc
+          neoformat
           youcompleteme
           ale
         ];
