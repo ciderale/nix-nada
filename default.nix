@@ -20,6 +20,7 @@ let
      };
   };
   pkgs = import ./nix/1903-darwin.nix {
+    config = {};
     overlays = [overlay];
   };
 in
