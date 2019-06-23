@@ -11,6 +11,7 @@ with pkgs;
 let
   git = gitFull;
   nix-pinning = callPackage ./packages/nix-pinning.nix {};
+  nix-update = callPackage ./packages/nix-update.nix {};
   zsh = callPackage ./packages/zsh.nix {};
   vim = callPackage ./packages/vim { git = gitFull; };
   lorri = callPackage ./packages/lorri.nix { };
@@ -19,7 +20,7 @@ in
 # nix-env -f ./default.nix -iA buildInputs
 mkShell {
   buildInputs = [
-    nix-pinning
+    nix-pinning nix-update
     zsh vim git
     which coreutils less
     curl jq
