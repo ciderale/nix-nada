@@ -5,8 +5,9 @@ self: super:
         # testsuite has an issue on osx
         # https://github.com/alanz/ghc-exactprint/issues/66
         ghc-exactprint = dontCheck hsuper.ghc-exactprint;
-        multistate = overrideCabal (dontCheck hsuper.multistate) (old: {
+        multistate = overrideCabal hsuper.multistate (old: {
           broken=false;
+          doCheck=false;
         });
 
         butcher = overrideCabal hsuper.butcher (old: {
