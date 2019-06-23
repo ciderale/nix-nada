@@ -21,12 +21,14 @@ writeShellScriptBin "nix-pinning" ''
 
 
   cat <<EOF
-  # nix-pinning $*
-  # committed on $COMMITTED - retrieved on $DATE
-  import (builtins.fetchTarball {
-    name   = "$DERIVATION_NAME";
-    url    = "$TARBALL";
-    sha256 = "$SHA256";
-  })
+  {
+    "name"   : "$DERIVATION_NAME",
+    "url"    : "$TARBALL",
+    "sha256" : "$SHA256",
+    "repo":    "$REPO",
+    "branch":  "$BRANCH",
+    "committedOn": $COMMITTED,
+    "retrievedOn": "$DATE"
+  }
   EOF
 ''

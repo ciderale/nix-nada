@@ -4,7 +4,7 @@
 }:
 
 let
-  meta = builtins.import (./.  + "/${version}.nix");
+  meta = builtins.fromJSON (builtins.readFile (./.  + "/${version}.json"));
   tarball = builtins.fetchTarball {
     inherit (meta) name url sha256;
   };
