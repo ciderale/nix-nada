@@ -1,12 +1,6 @@
 let
   overlay = import ./haskellOverlay.nix;
-  overlay2 = self: super: {
-    nix-pinning = self.callPackage ./packages/nix-pinning.nix {};
-    nix-update = self.callPackage ./packages/nix-update.nix {};
-    lorri = self.callPackage ./packages/lorri.nix { };
-    myzsh = self.callPackage ./packages/zsh.nix {};
-    myvim = self.callPackage ./packages/vim { git = self.gitFull; };
-  };
+  overlay2 = import ./packages/overlay.nix;
   pkgs = import ./nix { version="1903-darwin"; } {
     config = {};
     overlays = [overlay overlay2];
