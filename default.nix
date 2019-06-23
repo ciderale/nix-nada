@@ -24,7 +24,7 @@ mkShell {
     zsh vim git
     which coreutils less
     curl jq
-    lorri.direnv lorri.lorri
+    direnv lorri.lorri
     haskellPackages.brittany
   ];
   shellHook = ''
