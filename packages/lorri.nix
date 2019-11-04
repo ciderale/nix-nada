@@ -1,11 +1,10 @@
 { pkgs
 }:
 let
-  lorriRepo = import ../nix { version="lorri"; import=false; };
-  lorri = import "${lorriRepo}/default.nix" {
+  lorriRepo = import ../nix/lorri.nix;
+in {
+  lorri = import "${lorriRepo}" {
     inherit pkgs; # does not build with 'crate' problem
     src = lorriRepo;
   };
-in {
-  inherit lorriRepo lorri;
 }

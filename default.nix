@@ -1,7 +1,7 @@
 let
   overlay = import ./haskellOverlay.nix;
   overlay2 = import ./packages/overlay.nix;
-  pkgs = import ./nix { version="1903-darwin"; } {
+  pkgs = import ./nix/nixpkgs-1909-darwin.nix {
     config = {};
     overlays = [overlay overlay2];
   };

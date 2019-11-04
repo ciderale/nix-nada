@@ -1,9 +1,0 @@
-{
-  "name": "nixos_nixpkgs-channels-nixpkgs-19.03-darwin-2019-06-23",
-  "url": "https://github.com/nixos/nixpkgs-channels/archive/d7752fc0ebf9d49dc47c70ce4e674df024a82cfa.tar.gz",
-  "sha256": "1rw4fgnm403yf67lgnvalndqqy6ln6bz1grd6zylrjblyxnhqkmj",
-  "repo": "nixos/nixpkgs-channels",
-  "branch": "nixpkgs-19.03-darwin",
-  "committedOn": "2019-06-23T08:49:25Z",
-  "retrievedOn": "2019-06-23"
-}
