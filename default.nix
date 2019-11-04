@@ -13,7 +13,7 @@ with pkgs;
 # nix-env -f ./default.nix -iA buildInputs
 mkShell {
   buildInputs = [
-    nix-pinning nix-update
+    nix-pinning.pinning nix-pinning.update
     myzsh myvim gitFull
     which coreutils less
     curl jq
