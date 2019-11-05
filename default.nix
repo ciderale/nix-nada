@@ -14,10 +14,11 @@ with pkgs;
 mkShell {
   buildInputs = [
     nix-pinning.pinning nix-pinning.update
-    myzsh myvim gitFull
-    which coreutils less
-    curl jq
     direnv lorri.lorri
+
+    which coreutils less gitFull
+    myzsh # myvim
+    curl jq
     haskellPackages.brittany
   ];
   shellHook = ''
