@@ -1,8 +1,22 @@
 { writeShellScriptBin, nix, git, coreutils, gnused }:
 
-{ pinning = writeShellScriptBin "nix-pinning" ''
+{
+pinning = writeShellScriptBin "nix-pinning" ''
   set -e
-  BRANCH=''${1:-nixos-unstable}
+
+  # Selecting a channels: some documentation
+  # https://nixos.wiki/wiki/Nixpkgs
+  # https://nixos.wiki/wiki/Nix_channels
+  # https://gist.github.com/grahamc/c60578c6e6928043d29a427361634df6#which-channel-is-right-for-me
+  # http://howoldis.herokuapp.com/
+  if [ $# -lt 1 ]; then
+    echo " USAGE: nix-pinning <branch/rev> [<repo> ?noimport?]"
+    echo " USAGE: nix-pinning nixos-unstable nixos/nixpkgs-channels"
+    echo " typical branches: nixpkgs-unstable, nixos-19.09, nixpkgs-19.09-darwin"
+    exit 1
+  fi
+
+  BRANCH=''${1}
   REPO=''${2:-nixos/nixpkgs-channels}
   # typically 'import' the remote, but sometimes we need the store path
   DO_IMPORT=$(echo $* | grep -q noimport || echo "import ")
@@ -33,10 +47,15 @@
   })
   EOF
 '';
+
 update = writeShellScriptBin "nix-pinup" ''
-for pin in $*; do
-  CMD=$(${coreutils}/bin/head -n 1 $pin | ${gnused}/bin/sed -e 's/#[[:space:]]*//')
-  $CMD > $pin
-done
+  if [ $# -lt 1 ]; then
+    echo " USAGE: nix-pinup <pinned1.nix> [<pinned2.nix>...]"
+  fi
+
+  for pin in $*; do
+    CMD=$(${coreutils}/bin/head -n 1 $pin | ${gnused}/bin/sed -e 's/#[[:space:]]*//')
+    $CMD > $pin
+  done
 '';
 }
