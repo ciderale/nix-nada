@@ -6,21 +6,6 @@ let
     overlays = [overlay overlay2];
   };
 in
+  pkgs
 
-with pkgs;
-
-# install globally with
-# nix-env -f ./default.nix -iA buildInputs
-mkShell {
-  buildInputs = [
-    nix-pinning.pinning nix-pinning.update
-    direnv lorri.lorri
-
-    which coreutils less gitFull
-    myzsh # myvim
-    curl jq
-    haskellPackages.brittany
-  ];
-  shellHook = ''
-  '';
-}
+# install: nix-env -f ./default.nix -iA nix-pinning
