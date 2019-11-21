@@ -67,13 +67,23 @@ init = writeShellScriptBin "nix-init" ''
   let
     overlay = self: super: {
       jdk = super.jdk11;
+      nodejs = super.nodejs-12_x;
     };
     pkgs = import ./nixpkgs { overlays = [overlay]; };
   in with pkgs; {
     inherit pkgs;
     shell = mkShell {
-      buildInputs = [curl jdk];
-      shellHook = "export ROOTDIR=\$(pwd)";
+      buildInputs = [
+        curl
+        jdk gradle
+        #nodejs
+        #google-cloud-sdk
+        #kubectl kustomize sops
+        # find more with nix-search
+      ];
+      shellHook = '''
+        export ROOTDIR=\$(pwd)
+      ''';
     };
   }
   EOF
