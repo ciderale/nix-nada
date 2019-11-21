@@ -58,4 +58,28 @@ update = writeShellScriptBin "nix-pinup" ''
     $CMD > $pin
   done
 '';
+
+init = writeShellScriptBin "nix-init" ''
+  [ ! -e .envrc ] && echo "use nix" > .envrc
+  mkdir -p nixpkgs
+  [ ! -e nixpkgs/default.nix ] && nix-pinning nixpkgs-unstable > nixpkgs/default.nix
+  [ ! -e default.nix ] && cat >> default.nix <<EOF
+  let
+    overlay = self: super: {
+      jdk = super.jdk11;
+    };
+    pkgs = import ./nixpkgs { overlays = [overlay]; };
+  in with pkgs; {
+    inherit pkgs;
+    shell = mkShell {
+      buildInputs = [curl jdk];
+      shellHook = "export ROOTDIR=\$(pwd)";
+    };
+  }
+  EOF
+  [ ! -e shell.nix ] && cat >> shell.nix <<EOF
+  with (import ./.);
+  shell
+  EOF
+'';
 }
