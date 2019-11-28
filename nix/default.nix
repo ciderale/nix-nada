@@ -1,1 +1,0 @@
-nixpkgs-1909-darwin.nix
