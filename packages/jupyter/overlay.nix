@@ -2,6 +2,9 @@ let # Adding minor modifications/patches to python
   pyNoCheck = pkg: pkg.overridePythonAttrs (old: rec {doCheck = false;});
 
   packageOverrides = self: super: {
+     docker = pyNoCheck super.docker;
+     docutils = pyNoCheck super.docutils;
+     sqlalchemy = pyNoCheck super.sqlalchemy;
      send2trash = pyNoCheck super.send2trash;
      notebook = pyNoCheck super.notebook;
      terminado = pyNoCheck super.terminado;
