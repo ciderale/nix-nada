@@ -5,6 +5,7 @@ mkShell {
     gitFull curl jq direnv less
     lorri.lorri
     myzsh
+    haskellPackages.brittany
     #myvim
   ];
   shellHook = ''

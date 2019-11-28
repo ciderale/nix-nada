@@ -62,34 +62,34 @@ update = writeShellScriptBin "nix-pinup" ''
 init = writeShellScriptBin "nix-init" ''
   [ ! -e .envrc ] && echo "use nix" > .envrc
   mkdir -p nixpkgs
-  [ ! -e nixpkgs/default.nix ] && nix-pinning nixpkgs-unstable > nixpkgs/default.nix
   [ ! -e default.nix ] && cat >> default.nix <<EOF
   let
     overlay = self: super: {
+      # modify nixpkgs and select custom versions
       jdk = super.jdk11;
       nodejs = super.nodejs-12_x;
     };
     pkgs = import ./nixpkgs { overlays = [overlay]; };
-  in with pkgs; {
-    inherit pkgs;
-    shell = mkShell {
-      buildInputs = [
-        curl
-        jdk gradle
-        #nodejs
-        #google-cloud-sdk
-        #kubectl kustomize sops
-        # find more with nix-search
-      ];
-      shellHook = '''
-        export ROOTDIR=\$(pwd)
-      ''';
-    };
-  }
+  in
+    pkgs
   EOF
   [ ! -e shell.nix ] && cat >> shell.nix <<EOF
   with (import ./.);
-  shell
+  mkShell {
+    buildInputs = [
+      curl
+      #jdk gradle
+      #nodejs
+      #google-cloud-sdk
+      #kubectl kustomize sops
+      # find more with nix-search
+    ];
+    shellHook = '''
+      export ROOTDIR=\$(pwd)
+      unset IN_NIX_SHELL
+    ''';
+  }
   EOF
+  [ ! -e nixpkgs/default.nix ] && nix-pinning nixpkgs-unstable > nixpkgs/default.nix
 '';
 }
