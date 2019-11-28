@@ -6,6 +6,7 @@ mkShell {
     lorri.lorri
     myzsh
     haskellPackages.brittany
+    #jdk
     #myvim
   ];
   shellHook = ''
