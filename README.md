@@ -1,23 +1,40 @@
-# Configuration of a user environment
+# Nix-Nada: Reproducible Environment with nix
 
-- `nix-shell --pure`: try the configuration in a shell
-- `nix-env -f ./default.nix -iA buildInputs` permanent installation
+## Create a brand new project
 
-# Various samples (jupyter, docker usage, etc on osx)
+mkdir project
+cd project
+nix-init
+direnv allow
 
-- the configuration for jupyter is currently not maintained
+## Update the pinned nix packages
 
-# Notes:
+cd project && nix-pinup nixpkgs/default.nix
 
-- use a custom nixpkgs definition in nix-shell/nix-build
-      nix-shell -I nixpkgs=${HOME}/.nix-defexpr/channels/unstable/ --pure
-  nix-env uses the references in .nix-defexpr automatically
-  pinning the nixpkgs version explicitly avoid this step
+## Configure alternative remotes
 
-# Some blog posts
+cd project && nix-pinning nixos-unstable > nixpkgs/nixos.nix
 
-- Overlays Mechanism (including link to slides & talk)
-  - https://blog.flyingcircus.io/2017/11/07/nixos-the-dos-and-donts-of-nixpkgs-overlays/
+## One-time (system) Installation
 
-- very short example
-http://techblog.holidaycheck.com/post/2017/11/14/nix-in-practice-providing-dependencies
+1) Install 'nix' [](https://nixos.org/nix/download.html)
+
+  > curl https://nixos.org/nix/install | sh
+
+2) Install & Configure 'direnv'
+
+  > nix-env -iA direnv
+  > echo 'eval "$(direnv hook zsh)"' > ~/.zshrc
+
+3) Install 'nix-pinning'
+
+  > nix-env -f ./default.nix -iA nix-pinning
+
+
+# Additional helpful nix commands
+
+- nix repl ./default.nix    (interactively exploring the packages)
+- nix search "query"        (find derivation mathing query)
+- nix search -u -f ./default.nix jdk (query jdk in locally pinned repo)
+- nix-shell --pure          (shell env with only declared dependencies)
+- nix-env -f ./default.nix -iA attributeName (global installation)
