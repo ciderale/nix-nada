@@ -2,10 +2,11 @@ with (import ./.);
 
 mkShell {
   buildInputs = (with nix-pinning; [init update pinning]) ++ [
-    gitFull curl jq direnv less
-    lorri.lorri
+    gitFull curl jq direnv less coreutils
     myzsh
-    haskellPackages.brittany
+
+    #lorri.lorri
+    #haskellPackages.brittany
     #jdk
     #myvim
   ];
