@@ -1,11 +1,11 @@
-with (import ../nix/1809-darwin.nix {});
+{ docker, writeText, writeScriptBin }:
 
 let dockerfile = writeText "Dockerfile" ''
-  From ubuntu:17.10
+  From ubuntu:20.04
 
   # boot strapping environment
   RUN apt-get update
-  RUN apt-get install -y bzip2 curl man netbase locales
+  RUN apt-get install -y xz-utils sudo curl man netbase locales
 
   # setup locale
   RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \

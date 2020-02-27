@@ -3,4 +3,5 @@ self: super: {
   lorri = self.callPackage ./lorri.nix { };
   myzsh = self.callPackage ./zsh.nix {};
   myvim = self.callPackage ./vim { git = self.gitFull; };
+  linix = self.callPackage ./linix.nix {};
 }
