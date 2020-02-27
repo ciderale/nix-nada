@@ -8,6 +8,6 @@ let
     inherit (self) bash writers shellcheck;
   };
 
-  pkgs = import pkgPath { overlays = [overlay jdk shOverlay]; };
+  pkgs = import pkgPath { overlays = [overlay jdk ]; };
 in
   pkgs
