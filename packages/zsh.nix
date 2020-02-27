@@ -20,7 +20,7 @@ let
 
     # Which plugins would you like to load? (plugins can be found in $ZSH/plugins/*)
     # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-    plugins=(git nix-shell)
+    plugins=(git)
 
     # Uncomment the following line to disable bi-weekly auto-update checks.
     # => disable, since nix is immutable => update derivation
